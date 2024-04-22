@@ -1,0 +1,40 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import Main from "../../components/Main.astro";
+import { Image } from "astro:assets";
+
+export const getStaticPaths = async () => {
+  const posts = await getCollection("posts");
+  const paths = posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+  return paths;
+};
+
+type Props = {
+  post: CollectionEntry<"posts">;
+};
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<Layout title={post.data.title}>
+  <Main>
+    <h1 class="text-5xl font-bold">{post.data.title}</h1>
+    <Image
+      src={post.data.image}
+      alt={post.data.title}
+      width={1024}
+      height={1024 / 1.5}
+      format="webp"
+      class="rounded-2xl shadow-xl mb-28 aspect-thumbnail object-cover"
+    />
+    <div class="prose prose-2xl overflow-visible mb-20">
+      <Content />
+    </div>
+  </Main>
+</Layout>

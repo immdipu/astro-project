@@ -1,0 +1,17 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import Main from "../components/Main.astro";
+import PostLists from "../components/PostLists.astro";
+
+const posts = await getCollection("posts");
+---
+
+<Layout title="this is test">
+  <Main>
+    <h1>Rythem Post</h1>
+    <div>
+      <PostLists posts={posts} />
+    </div>
+  </Main>
+</Layout>
